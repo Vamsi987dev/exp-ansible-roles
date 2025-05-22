@@ -1,7 +1,4 @@
-- name: Mysql Configuration
-  hosts: mysql
-  become: yes
-  tasks:
+    tasks:
     - name: Install PyMySql with pip3.9
       ansible.builtin.pip:
         name: PyMySql
