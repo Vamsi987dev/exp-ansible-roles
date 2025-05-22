@@ -1,1 +1,2 @@
 path: "/usr/share/nginx/html"
+BACKEND_HOST: backend.daws81s.icu
