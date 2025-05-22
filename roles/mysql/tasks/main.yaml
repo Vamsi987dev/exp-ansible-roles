@@ -1,0 +1,46 @@
+- name: Mysql Configuration
+  hosts: mysql
+  become: yes
+  vars_files:
+    - vars.yaml
+  tasks:
+    - name: Install PyMySql with pip3.9
+      ansible.builtin.pip:
+        name: PyMySql
+        executable: pip3.9
+
+    - name: Install mysql server
+      ansible.builtin.package:
+        name: mysql-server
+        state: present
+
+    - name: Ensure Mysql service is running and enabled
+      ansible.builtin.service:
+        name: mysqld
+        state: started
+        enabled: yes
+
+    - name: Wait for Mysql Socket to be ready
+      ansible.builtin.wait_for:
+        port: 3306
+        state: started
+        timeout: 30
+
+    - name: Try to get Mysql Info
+      community.mysql.mysql_info:
+        login_user: "{{ login_user }}"
+        login_password: "{{ login_password }}"
+        login_host: "{{ login_host }}"
+      ignore_errors: true
+      register: mysql_info
+
+    - name: Show mysql info
+      ansible.builtin.debug:
+        msg: "{{ mysql_info }}"
+
+    - name: set mysql root password if connection failed
+      ansible.builtin.command: mysql_secure_installation --set-root-pass {{ login_password }}
+      when: mysql_info.failed is true
+
+
+        
