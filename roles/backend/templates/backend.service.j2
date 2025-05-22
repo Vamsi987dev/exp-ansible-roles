@@ -1,0 +1,14 @@
+[Unit]
+Description = Backend Service
+After=network.target
+
+[Service]
+User=expense
+WorkingDirectory=/app
+ExecStart=/bin/node /app/index.js
+Environment=DB_HOST="{{ login_host }}"
+Restart=on-failure
+SyslogIdentifier=backend
+
+[Install]
+WantedBy=multi-user.target
