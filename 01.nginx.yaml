@@ -1,5 +1,5 @@
 - name: Install and start nginx
-  hosts: all
+  hosts: 172.31.89.134
   become: yes
   tasks:
   - name: install nginx
