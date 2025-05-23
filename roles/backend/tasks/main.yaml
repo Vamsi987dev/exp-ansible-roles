@@ -22,22 +22,11 @@
         - cryptography
         executable: pip3.9
 
+    - name: Import Tasks from common role
+      ansible.builtin.import_role: 
+      name: common
+      tasks_from: app-pre-req
     
-    - name: Download Application code(backend)
-      ansible.builtin.get_url:
-        url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
-        dest: /tmp/backend.zip
-
-    - name: create App directory
-      ansible.builtin.file:
-        name: /app
-        state: directory 
-
-    - name: Extarct the Code
-      ansible.builtin.unarchive:
-        src: /tmp/backend.zip 
-        dest: /app
-        remote_src: yes
 
     - name: install node.js dependencies
       ansible.builtin.command: npm install
