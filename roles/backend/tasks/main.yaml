@@ -26,13 +26,17 @@
       ansible.builtin.import_role: 
         name: common
         tasks_from: app-pre-req
+      tags:
+      - deployment
     
 
     - name: install node.js dependencies
       ansible.builtin.command: npm install
       args:
         chdir: /app
-    
+      tags:
+      - deployment
+
     - name: Copy backend systemd service file
       ansible.builtin.template:
         src: backend.service.j2
@@ -53,3 +57,5 @@
         name: backend
         state: restarted
         enabled: yes
+      tags:
+      - deployment
