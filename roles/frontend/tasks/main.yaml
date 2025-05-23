@@ -9,27 +9,11 @@
       state: restarted
       enabled: yes
   
-  - name: Remove default html directory
-    ansible.builtin.file:
-      path: "{{ path }}"
-      state: absent
+  - name: Import Tasks from common role
+    ansible.builtin.import_role: 
+      name: common
+      tasks_from: app-pre-req
 
-  - name: Create Html Directory
-    ansible.builtin.file:
-      path: "{{ path }}"
-      state: directory
-  
-  - name: Downlaod the frontend code
-    ansible.builtin.get_url: 
-      url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
-      dest: /tmp/frontend.zip
-  
-  - name: Extract the code
-    ansible.builtin.unarchive:
-      src: /tmp/frontend.zip
-      dest: "{{ path }}"
-      remote_src: yes
-  
   - name: Copy Expense Config 
     ansible.builtin.template:
       src: expense.conf.j2
